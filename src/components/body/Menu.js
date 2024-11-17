@@ -1,14 +1,19 @@
-import { CardColumns, Modal, ModalFooter } from "reactstrap";
-import DISHES from "../../data/dishes";
-import COMMENTS from "../../data/comments";
+import { CardColumns, Modal, ModalFooter, Button } from "reactstrap";
 import DishDetail from "./DishDetail";
 import MenuItem from "./MenuItem"
 import React, {Component} from "react" //{useState}
+import { connect } from "react-redux";
+
+const mapStateToProps = state =>{
+    return{
+        dishes: state.dishes,
+        comments: state.comments
+    }
+}
+console.log(mapStateToProps);
 
 class Menu extends Component {
     state = {
-        dishes: DISHES,
-        comments: COMMENTS,
         selectedDish: null,
         modalOpen: false,
     };
@@ -32,13 +37,13 @@ class Menu extends Component {
 
     render() {
         document.title = "Menu";
-        const menu = this.state.dishes.map((dish) => {
+        const menu = this.props.dishes.map((dish) => {
             return <MenuItem dish={dish} onSelectDish={this.onSelectDish} key={dish.id}/>;
         });
         
         let dishDetail = null;
         if (this.state.selectedDish != null) {
-            const comments = this.state.comments.filter((comment) => {
+            const comments = this.props.comments.filter((comment) => {
                 return comment.dishId === this.state.selectedDish.id;
             })
             dishDetail = <DishDetail 
@@ -55,7 +60,7 @@ class Menu extends Component {
                     <Modal isOpen={this.state.modalOpen} onClick={this.toggleModal}>
                         {dishDetail}
                         <ModalFooter> 
-                            <button  onClick={this.toggleModal}>Close</button>
+                            <Button color='primary' onClick={this.toggleModal}>Close</Button>
                         </ModalFooter>
                     </Modal>
                 </div>
@@ -66,4 +71,4 @@ class Menu extends Component {
     
 }
 
-export default Menu;
+export default connect(mapStateToProps) (Menu);
