@@ -1,19 +1,16 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux';
 import DISHES from '../../data/dishes';
 
 const mapStateToProps = state => {
-    console.log("mapStateToProps",state);
   return {
-    a: state.dishes
+    dishes: state.dishes,
+    sample: state.sample
   }
 }
 
 export class home extends Component {
-  componentDidMount(){
-    console.log("Home State: ", this.state);
-    console.log("Home props: ", this.props);
-  }
+
+
   render() {
     document.title = "Home";
     return (
@@ -22,4 +19,4 @@ export class home extends Component {
   }
 }
 
-export default connect(mapStateToProps) (home);
+export default home;
