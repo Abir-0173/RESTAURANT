@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import DISHES from '../../data/dishes';
+// import DISHES from '../../data/dishes';
+import Loading from './Loading';
 
 const mapStateToProps = state => {
   return {
@@ -14,7 +15,9 @@ export class home extends Component {
   render() {
     document.title = "Home";
     return (
-      <div>home</div>
+      <div>
+        <Loading />
+      </div>
     )
   }
 }
