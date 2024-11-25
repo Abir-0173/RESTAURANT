@@ -1,18 +1,27 @@
 // import { type } from '@testing-library/user-event/dist/type';
+import { type } from '@testing-library/user-event/dist/type';
 import * as actionTypes from './actionTypes';
 // import DISHES from '../data/dishes';
 import { baseUrl } from './baseUrl';
 import axios from 'axios';
 
-export const addComment = (dishId, rating, author, comment) => ({
-    type: actionTypes.ADD_COMMENT,
-    payload: {
+export const addComment = (dishId, rating, author, comment) => dispatch => {
+    const newComment = {
         dishId: dishId,
         author: author,
         rating: rating,
         comment: comment
     }
+    newComment.date = new Date().toISOString();
 
+    axios.post(baseUrl + 'comments', newComment)
+        .then(response => response.data)
+        .then(comment => dispatch(commentConcat(comment)))
+}
+
+export const commentConcat = (comment) => ({
+    type: actionTypes.ADD_COMMENT,
+    payload: comment
 })
 
 export const commentLoading = () => ({
