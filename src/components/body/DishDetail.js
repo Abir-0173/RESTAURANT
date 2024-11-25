@@ -2,13 +2,15 @@ import React from 'react'
 import LoadComments from './LoadComments';
 import { Card, CardImg, CardBody, CardTitle, CardText } from'reactstrap';
 import CommentForm from './CommentForm'; 
+import { baseUrl } from '../../redux/baseUrl';
 
 const DishDetail = (props) => {
+    console.log("this is from dishdetail: ",props);
     return (
         <Card className="my-2">
             <CardImg
                 alt="Card image cap"
-                src={props.dish.image}
+                src={baseUrl + props.dish.image}
                 style={{
                     height: 300,
                 }}
@@ -22,7 +24,7 @@ const DishDetail = (props) => {
 
                 <h3>Comments:</h3>
                 <hr/>
-                <LoadComments comments={props.comments}></LoadComments>
+                <LoadComments comments={props.comments} commentsIsLoading={props.commentsIsLoading}></LoadComments>
                 <hr />
                 <CommentForm dishId={props.dish.id} addComment={props.addComment} />
             </CardBody>

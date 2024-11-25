@@ -1,4 +1,5 @@
 import { Card, CardImg, CardImgOverlay, CardTitle } from "reactstrap";
+import { baseUrl } from "../../redux/baseUrl";
 
 const MenuItem = ({ dish, onSelectDish }) => {
     return (
@@ -8,7 +9,7 @@ const MenuItem = ({ dish, onSelectDish }) => {
             <Card inverse style={{padding:10, margin:10, cursor:"grab"}} onClick={() => onSelectDish(dish)}>
                 <CardImg
                     alt="Card image cap"
-                    src={dish.image}
+                    src={baseUrl + dish.image}
                     style={{
                         width: "100%",
                         opacity: 0.5,

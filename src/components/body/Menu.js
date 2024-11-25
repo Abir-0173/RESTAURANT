@@ -3,7 +3,7 @@ import DishDetail from "./DishDetail";
 import MenuItem from "./MenuItem"
 import React, { Component } from "react" //{useState}
 import { connect } from "react-redux";
-import { addComment, fetchDishes } from "../../redux/actionCreators";
+import { addComment, fetchComments, fetchDishes } from "../../redux/actionCreators";
 import Loading from './Loading';
 
 // CONVERT STATE TO PROPS
@@ -19,7 +19,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment)),
-        fetchDishes: () => dispatch(fetchDishes())
+        fetchDishes: () => dispatch(fetchDishes()),
+        fetchComments: () => dispatch(fetchComments())
     }
 }
 
@@ -46,6 +47,7 @@ class Menu extends Component {
 
     componentDidMount() {
         this.props.fetchDishes();
+        this.props.fetchComments();
     }
 
 
@@ -53,6 +55,7 @@ class Menu extends Component {
 
     render() {
         // console.log("Dishes:", this.props.dishes);
+        // console.log("Comments State:", this.props.comments); // Log the comments state
         document.title = "Menu";
         if (this.props.dishes.isLoading) {
             return (
@@ -66,14 +69,33 @@ class Menu extends Component {
 
             let dishDetail = null;
             if (this.state.selectedDish != null) {
-                const comments = this.props.comments.filter((comment) => {
+                // console.log("All Comments Before Filtering:", this.props.comments.comments);
+                const comments = this.props.comments.comments.filter((comment) => {
                     return comment.dishId === this.state.selectedDish.id;
-                })
-                dishDetail = <DishDetail
-                    dish={this.state.selectedDish}
-                    comments={comments}
-                    addComment={this.props.addComment} />;
+                });
+                // console.log("Selected Dish:", this.state.selectedDish);
+                // console.log("Selected Dish ID:", this.state.selectedDish.id );//this.state.selectedDish?.id
+                // console.log("Filtered Comments:", comments);
+
+                dishDetail = (
+                    <DishDetail
+                        dish={this.state.selectedDish}
+                        comments={comments}
+                        addComment={this.props.addComment}
+                        commentsIsLoading={this.props.comments.isLoading}
+                    />
+                );
             }
+            // if (this.state.selectedDish != null) {
+            //     const comments = this.props.comments.comments.filter((comment) => {
+            //         return comment.dishId === this.state.selectedDish.id;
+            //     })
+            //     dishDetail = <DishDetail
+            //         dish={this.state.selectedDish}
+            //         comments={comments}
+            //         addComment={this.props.addComment}
+            //         commentsIsLoading={this.props.comments.isLoading} />;
+            // }
 
             // const dishDetail = this.state.selectedDish ? <DishDetail dish={this.state.selectedDish}  />: null ;
 
